@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_kasir/views/TambahBarangView.dart';
+import 'package:flutter_kasir/views/Toko.dart';
+import 'package:flutter_kasir/views/UserLogin.dart';
+import 'package:flutter_kasir/views/home_User.dart';
 import 'package:flutter_kasir/views/register_user_view.dart';
 
 void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    initialRoute: '/',
+    initialRoute: '/toko',
     routes: {
-      '/':(context) => RegisterUserView()
+      '/':(context) => RegisterUserView(),
+      '/login':(context) => LoginView(),
+      '/home':(context) => DashboardView(),
+      '/toko':(context) => Tokoview()
+    
     }
   )
   );

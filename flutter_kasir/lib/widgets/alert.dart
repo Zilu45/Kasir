@@ -4,7 +4,7 @@ class AlertMessage {
   showAlert(BuildContext context, message, status) {
     Color? warnafill;
     Color warnagaris;
-    if (status) {
+    if (status == true) {
       warnafill = Colors.green[200];
       warnagaris = Colors.green;
     } else {

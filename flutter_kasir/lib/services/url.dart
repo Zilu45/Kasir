@@ -1,2 +1,4 @@
-final String BaseUrl = "http://localhost/Toko_Online_XIR2_TanzilurRahman/public/api/register_admin";
+final String BaseUrl = "https://learn.smktelkom-mlg.sch.id/api";
+// final String BaseUrl = "http://localhost/belajar_laravel/public/api";
 
+final String BaseUrlTanpaAPi = "https://learn.smktelkom-mlg.sch.id";
