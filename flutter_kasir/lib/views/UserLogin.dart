@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-// ignore: unused_import
-import 'package:flutter_kasir/views/register_user_view.dart';
 import 'package:flutter_kasir/services/user.dart';
 import 'package:flutter_kasir/widgets/alert.dart';
 
@@ -18,119 +16,168 @@ class _LoginViewState extends State<LoginView> {
   TextEditingController password = TextEditingController();
   bool isLoading = false;
   bool showPass = true;
-  loginUser() async {
-    var datas = {
-      "email": "sultannmuhammad5758@gmail.com",
-      "password": "Sultan5758"
-    };
-    var result = await UserService().loginUser(datas);
-    print(result.status);
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    loginUser();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.green[50],
       appBar: AppBar(
         title: Text("Login"),
         backgroundColor: Colors.green,
         foregroundColor: Colors.white,
-        actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.pushReplacementNamed(context, '/');
-              },
-              icon: Icon(Icons.add))
-        ],
+        elevation: 0,
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          margin: EdgeInsets.all(10),
-          padding: EdgeInsets.all(10),
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(color: Colors.white),
-          child: Column(
-            children: [
-              Form(
+      body: Center(
+        child: SingleChildScrollView(
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            padding: EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(24),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.green.withOpacity(0.1),
+                  blurRadius: 10,
+                  offset: Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Logo atau Icon
+                CircleAvatar(
+                  radius: 36,
+                  backgroundColor: Colors.green[100],
+                  child: Icon(Icons.store, color: Colors.green, size: 40),
+                ),
+                SizedBox(height: 16),
+                Text(
+                  "Selamat Datang",
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.green[800],
+                  ),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  "Silakan login untuk melanjutkan",
+                  style: TextStyle(color: Colors.grey[700]),
+                ),
+                SizedBox(height: 24),
+                Form(
                   key: formKey,
                   child: Column(
                     children: [
                       TextFormField(
                         controller: email,
-                        decoration: InputDecoration(label: Text("Email")),
+                        decoration: InputDecoration(
+                          labelText: "Email",
+                          prefixIcon: Icon(Icons.email, color: Colors.green),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'Email harus diisi';
-                          } else {
-                            return null;
                           }
+                          return null;
                         },
                       ),
+                      SizedBox(height: 16),
                       TextFormField(
                         controller: password,
                         obscureText: showPass,
                         decoration: InputDecoration(
-                          label: Text("Password"),
-                          suffix: IconButton(
+                          labelText: "Password",
+                          prefixIcon: Icon(Icons.lock, color: Colors.green),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          suffixIcon: IconButton(
                             onPressed: () {
                               setState(() {
                                 showPass = !showPass;
                               });
                             },
-                            icon: showPass
-                                ? Icon(Icons.visibility)
-                                : Icon(Icons.visibility_off),
+                            icon: Icon(
+                              showPass ? Icons.visibility : Icons.visibility_off,
+                              color: Colors.green,
+                            ),
                           ),
                         ),
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'Password harus diisi';
-                          } else {
-                            return null;
                           }
+                          return null;
                         },
                       ),
-                      MaterialButton(
-                        onPressed: () async {
-                          if (formKey.currentState!.validate()) {
-                            setState(() {
-                              isLoading = true;
-                            });
-                            var data = {
-                              "email": email.text,
-                              "password": password.text,
-                            };
-                            var result = await user.loginUser(data);
-                            setState(() {
-                              isLoading = false;
-                            });
-                            print(result.message);
-                            if (result.status == true) {
-                              AlertMessage()
-                                  .showAlert(context, result.message, true);
-                              Future.delayed(Duration(seconds: 2), () {});
-                              Navigator.pushReplacementNamed(
-                                  context, '/home');
-                            } else {
-                              AlertMessage()
-                                  .showAlert(context, result.message, false);
-                            }
-                          }
-                        },
-                        color: Colors.lightGreen,
-                        child: isLoading == false
-                            ? Text("LOGIN")
-                            : CircularProgressIndicator(),
-                      )
+                      SizedBox(height: 24),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green,
+                            foregroundColor: Colors.white,
+                            padding: EdgeInsets.symmetric(vertical: 14),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          onPressed: isLoading
+                              ? null
+                              : () async {
+                                  if (formKey.currentState!.validate()) {
+                                    setState(() {
+                                      isLoading = true;
+                                    });
+                                    var data = {
+                                      "email": email.text,
+                                      "password": password.text,
+                                    };
+                                    var result = await user.loginUser(data);
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                    if (result.status == true) {
+                                      AlertMessage().showAlert(
+                                          context, result.message, true);
+                                      Future.delayed(Duration(seconds: 2), () {});
+                                      Navigator.pushReplacementNamed(
+                                          context, '/home');
+                                    } else {
+                                      AlertMessage().showAlert(
+                                          context, result.message, false);
+                                    }
+                                  }
+                                },
+                          child: isLoading
+                              ? SizedBox(
+                                  height: 22,
+                                  width: 22,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2.5,
+                                  ),
+                                )
+                              : Text(
+                                  "LOGIN",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                        ),
+                      ),
                     ],
-                  ))
-            ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

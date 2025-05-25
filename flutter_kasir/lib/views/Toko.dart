@@ -23,17 +23,31 @@ class _TokoviewState extends State<Tokoview> {
     if (res.data != null) {
       data = List<BarangModel>.from(res.data!);
     }
-    // Tambahkan barang dummy jika data kosong
+
     if (data.isEmpty) {
-      data.add(
+      data.addAll([
         BarangModel(
           id: 1,
           barang: "Kecap",
           harga: 20000,
           overview: "ini kecap",
-          image: "https://picsum.photos/id/292/200/300",
+          image: "doksli/kecap.png", 
         ),
-      );
+        BarangModel(
+          id: 2,
+          barang: "Sambal",
+          harga: 15000,
+          overview: "ini sambal pedas",
+          image: "doksli/sambal.png", 
+        ),
+        BarangModel(
+          id: 3,
+          barang: "Minyak Goreng",
+          harga: 25000,
+          overview: "minyak goreng 1L",
+          image: "doksli/minyak.png", 
+        ),
+      ]);
     }
     setState(() {
       produk = data;
@@ -79,20 +93,27 @@ class _TokoviewState extends State<Tokoview> {
                 return Card(
                   shape: RoundedRectangleBorder(
                     borderRadius:
-                        BorderRadius.circular(16), // <-- Membuat card membulat
+                        BorderRadius.circular(16), 
                   ),
                   elevation: 4,
                   child: ListTile(
                     leading: ClipRRect(
                       borderRadius:
-                          BorderRadius.circular(12), // Membulatkan gambar juga
-                      child: Image.network(
-                        barang.image ?? "https://picsum.photos/200/300",
-                        width: 60,
-                        height: 60,
-                        fit: BoxFit.cover,
-                        errorBuilder: (c, e, s) => Icon(Icons.broken_image),
-                      ),
+                          BorderRadius.circular(12), 
+                      child: barang.image != null && barang.image!.startsWith('assets/')
+                          ? Image.asset(
+                              barang.image!,
+                              width: 60,
+                              height: 60,
+                              fit: BoxFit.cover,
+                            )
+                          : Image.network(
+                              barang.image ?? "https://picsum.photos/200/300",
+                              width: 60,
+                              height: 60,
+                              fit: BoxFit.cover,
+                              errorBuilder: (c, e, s) => Icon(Icons.broken_image),
+                            ),
                     ),
                     title: Text(barang.barang ?? '-'),
                     subtitle:
